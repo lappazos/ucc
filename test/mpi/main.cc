@@ -28,6 +28,7 @@ static std::vector<ucc_test_mpi_inplace_t> inplace = {TEST_NO_INPLACE};
 static ucc_test_mpi_root_t root_type = ROOT_RANDOM;
 static int root_value = 10;
 static ucc_thread_mode_t thread_mode = UCC_THREAD_SINGLE;
+static int iterations = 1;
 static std::vector<std::string> str_split(const char *value, const char *delimiter)
 {
     std::vector<std::string> rst;
@@ -304,7 +305,7 @@ void PrintInfo()
 
 void ProcessArgs(int argc, char** argv)
 {
-    const char* const short_opts = "c:t:m:d:o:M:I:r:s:C:D:Z:Th";
+    const char* const short_opts = "c:t:m:d:o:M:I:r:s:C:D:i:Z:Th";
     const option long_opts[] = {
         {"colls",           required_argument, nullptr, 'c'},
         {"teams",           required_argument, nullptr, 't'},
@@ -318,6 +319,7 @@ void ProcessArgs(int argc, char** argv)
         {"max_size",        required_argument, nullptr, 'Z'},
         {"count_bits",      required_argument, nullptr, 'C'},
         {"displ_bits",      required_argument, nullptr, 'D'},
+        {"iter",            required_argument, nullptr, 'i'},
         {"thread-multiple", no_argument,       nullptr, 'T'},
         {"help",            no_argument,       nullptr, 'h'},
         {nullptr,           no_argument,       nullptr, 0}
@@ -371,6 +373,9 @@ void ProcessArgs(int argc, char** argv)
         case 'T':
             thread_mode = UCC_THREAD_MULTIPLE;
             break;
+        case 'i':
+            iterations = std::stoi(optarg);
+            break;
         case 'h': // -h or --help
         case '?': // Unrecognized option
         default:
@@ -399,6 +404,7 @@ int main(int argc, char *argv[])
     }
     UccTestMpi test(argc, argv, thread_mode);
     test.create_teams(teams);
+    test.set_iter(iterations);
     test.set_colls(colls);
     test.set_dtypes(dtypes);
     test.set_mtypes(mtypes);

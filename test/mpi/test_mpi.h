@@ -115,6 +115,7 @@ class UccTestMpi {
     ucc_test_mpi_inplace_t inplace;
     ucc_test_mpi_root_t    root_type;
     int                    root_value;
+    int                    iterations;
     void create_team(ucc_test_mpi_team_t t);
     void destroy_team(ucc_test_team_t &team);
     ucc_team_h create_ucc_team(MPI_Comm comm);
@@ -136,6 +137,7 @@ public:
     void set_msgsizes(size_t min, size_t max, size_t power);
     void set_dtypes(std::vector<ucc_datatype_t> &_dtypes);
     void set_colls(std::vector<ucc_coll_type_t> &_colls);
+    void set_iter(int iter);
     void set_ops(std::vector<ucc_reduction_op_t> &_ops);
     void set_mtypes(std::vector<ucc_memory_type_t> &_mtypes);
     void set_inplace(ucc_test_mpi_inplace_t _inplace) {
